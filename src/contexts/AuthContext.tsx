@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { ReactNode, useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import { User as FirebaseUser } from 'firebase/auth';
 import {
@@ -26,12 +26,16 @@ type contextProps = {
   currentUserDB: any;
 };
 
+export interface AuthProviderProps {
+  children?: ReactNode;
+}
+
 const AuthContext = React.createContext<contextProps | null>(null);
 export const UserAuth = () => {
   return useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
 
   const { currentUserDB } = useUserData(currentUser?.uid);

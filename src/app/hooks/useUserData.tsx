@@ -17,7 +17,6 @@ const useUserData = (id?: useUserDataProps) => {
         } else {
           // doc.data() will be undefined in this case
           setCurrentUserDB({});
-          console.log(currentUserDB);
         }
       }
     };
