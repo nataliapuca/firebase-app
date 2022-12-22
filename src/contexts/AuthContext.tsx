@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { auth, database } from '../firebase';
+import { auth } from '../firebase';
+import { User as FirebaseUser } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -13,22 +14,33 @@ import {
 } from 'firebase/auth';
 import useUserData from '../app/hooks/useUserData';
 
-const AuthContext = React.createContext();
+type contextProps = {
+  logout: () => void;
+  currentUser: FirebaseUser | null;
+  signup: (email: string, password: string) => void;
+  login: (email: string, password: string) => void;
+  resetPassword: (email: string) => void;
+  updateAccountEmail: (password: string) => void;
+  updateAccountPassword: (email: string) => void;
+  logInWithGoogle: () => void;
+  currentUserDB: any;
+};
+
+const AuthContext = React.createContext<contextProps | null>(null);
 export const UserAuth = () => {
   return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }) => {
-  console.log('context');
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
 
-  const [currentUser, setCurrentUser] = useState({});
-  const { currentUserDB } = useUserData(currentUser.uid);
+  const { currentUserDB } = useUserData(currentUser?.uid);
 
-  const signup = (email, password) => {
+  const signup = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  const login = (email, password) => {
+  const login = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -41,27 +53,27 @@ export const AuthProvider = ({ children }) => {
     signOut(auth);
   };
 
-  const resetPassword = email => {
+  const resetPassword = (email: string) => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  const updateAccountPassword = password => {
-    return updatePassword(currentUser, password);
+  const updateAccountPassword = (password: string) => {
+    return currentUser ? updatePassword(currentUser, password) : null;
   };
 
-  const updateAccountEmail = email => {
-    return updateEmail(currentUser, email);
+  const updateAccountEmail = (email: string) => {
+    return currentUser ? updateEmail(currentUser, email) : null;
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setCurrentUser(currentUser);
-      console.log(currentUser.uid);
+      console.log(currentUser);
     });
     return unsubscribe;
   }, []);
 
-  const value = {
+  const value: contextProps = {
     logout,
     currentUser,
     signup,

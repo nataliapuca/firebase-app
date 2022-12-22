@@ -33,40 +33,38 @@ const Landing = () => {
 
   return (
     <>
-      {currentUserDB.email && (
-        <>
-          <Card>
-            <Card.Body>
-              <h2 className="text-center mb-4">Landing content</h2>
-              {error && (
-                <div class="alert alert-danger" role="alert">
-                  {error}
-                </div>
-              )}
-              <strong> Auth Email: </strong>
-              {currentUser.email}
-              <br />
-              <strong>DB Email: </strong>
-              {currentUserDB.email}
-              <br />
-              <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-                update profile
-              </Link>
-            </Card.Body>
-          </Card>
-          <Button
-            disabled={loading}
-            variant="link"
-            onClick={handlelogout}
-            className="w-100 text-center mt-2"
-          >
-            Log out
-          </Button>
-          <Button className="w-100 mb-2" onClick={readUsers}>
-            Read Users
-          </Button>
-        </>
-      )}
+      <>
+        <Card>
+          <Card.Body>
+            <h2 className="text-center mb-4">Landing content</h2>
+            {error && (
+              <div class="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
+            <strong> Auth Email: </strong>
+            {currentUser.email}
+            <br />
+            <strong>DB Email: </strong>
+            {currentUserDB.email}
+            <br />
+            <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
+              update profile
+            </Link>
+          </Card.Body>
+        </Card>
+        <Button
+          disabled={loading}
+          variant="link"
+          onClick={handlelogout}
+          className="w-100 text-center mt-2"
+        >
+          Log out
+        </Button>
+        <Button className="w-100 mb-2" onClick={readUsers}>
+          Read Users
+        </Button>
+      </>
     </>
   );
 };
