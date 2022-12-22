@@ -1,15 +1,14 @@
 import * as React from 'react';
-import Signup from '../../components/Signup';
 import { Container } from 'react-bootstrap';
-
-export const HomePage = () => {
+import LogIn from '../../components/LogIn';
+export const LogInPage = () => {
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
       style={{ minHeight: '100vh' }}
     >
       <div className="w-100" style={{ maxWidth: '400px' }}>
-        <Signup />
+        <LogIn />
       </div>
     </Container>
   );
