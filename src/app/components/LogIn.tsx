@@ -1,26 +1,31 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { UserAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const { login, logInWithGoogle } = UserAuth();
-  const [error, setError] = useState();
-  const [alert, setAlert] = useState();
-  const [loadingSignIn, setLoadingSignIn] = useState(false);
-  const [loadingSignGoogle, setLoadingSignGoogle] = useState(false);
+  const emailRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const passwordRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const { login, logInWithGoogle, isLoggedIn, setIsLoggedIn } = UserAuth()!;
+  const [error, setError] = useState<null | string>(null);
+  const [alert, setAlert] = useState<null | string>(null);
+  const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false);
+  const [loadingSignGoogle, setLoadingSignGoogle] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleSignIn = async e => {
     e.preventDefault();
     try {
-      setError();
-      setAlert();
+      setError(null);
+      setAlert(null);
       setLoadingSignIn(true);
+      console.log(isLoggedIn);
       await login(emailRef.current.value, passwordRef.current.value);
       setAlert(`You logged in! :) Wait to be redirected to Landing page`);
+      setIsLoggedIn('logged in');
+      console.log(isLoggedIn);
+
       setLoadingSignIn(false);
       setTimeout(() => {
         navigate('/landing-page');
@@ -33,8 +38,8 @@ const LogIn = () => {
 
   const handleSignInWithGoogle = async () => {
     try {
-      setError();
-      setAlert();
+      setError(null);
+      setAlert(null);
       setLoadingSignGoogle(true);
       await logInWithGoogle();
       setAlert(`You logged in! :) Wait to be redirected to Landing page`);
@@ -54,12 +59,12 @@ const LogIn = () => {
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
           {error && (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
           {alert && (
-            <div class="alert alert-success" role="alert">
+            <div className="alert alert-success" role="alert">
               {alert}
             </div>
           )}

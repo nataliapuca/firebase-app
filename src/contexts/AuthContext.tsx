@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext, useState, useEffect } from 'react';
-import { auth } from '../firebase';
+import { auth, database } from '../firebase';
 import { User as FirebaseUser } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
@@ -13,6 +13,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import useUserData from '../app/hooks/useUserData';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 type contextProps = {
   logout: () => void;
@@ -24,6 +25,8 @@ type contextProps = {
   updateAccountPassword: (email: string) => void;
   logInWithGoogle: () => void;
   currentUserDB: any;
+  isLoggedIn: any;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export interface AuthProviderProps {
@@ -37,11 +40,33 @@ export const UserAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<any>('initial');
 
   const { currentUserDB } = useUserData(currentUser?.uid);
 
-  const signup = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+  const signup = (email: string, password: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      const usersRef = collection(database, 'users');
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          setDoc(doc(usersRef, userCredential.user.uid), {
+            first: '',
+            last: '',
+            street: '',
+            houseapt: '',
+            city: '',
+            postalcode: '',
+            country: '',
+            phone: '',
+            email: email,
+          });
+          resolve({ success: true });
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   };
 
   const login = (email: string, password: string) => {
@@ -87,6 +112,8 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     updateAccountPassword,
     logInWithGoogle,
     currentUserDB,
+    isLoggedIn,
+    setIsLoggedIn,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
