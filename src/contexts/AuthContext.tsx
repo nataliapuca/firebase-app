@@ -25,8 +25,6 @@ type contextProps = {
   updateAccountPassword: (email: string) => void;
   logInWithGoogle: () => void;
   currentUserDB: any;
-  isLoggedIn: any;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export interface AuthProviderProps {
@@ -40,7 +38,6 @@ export const UserAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<any>('initial');
 
   const { currentUserDB } = useUserData(currentUser?.uid);
 
@@ -97,7 +94,6 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setCurrentUser(currentUser);
-      console.log(currentUser);
     });
     return unsubscribe;
   }, []);
@@ -112,8 +108,6 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     updateAccountPassword,
     logInWithGoogle,
     currentUserDB,
-    isLoggedIn,
-    setIsLoggedIn,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

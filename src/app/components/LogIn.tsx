@@ -7,7 +7,7 @@ const LogIn = () => {
   const emailRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
   const passwordRef =
     React.useRef() as React.MutableRefObject<HTMLInputElement>;
-  const { login, logInWithGoogle, isLoggedIn, setIsLoggedIn } = UserAuth()!;
+  const { login, logInWithGoogle } = UserAuth()!;
   const [error, setError] = useState<null | string>(null);
   const [alert, setAlert] = useState<null | string>(null);
   const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false);
@@ -20,12 +20,8 @@ const LogIn = () => {
       setError(null);
       setAlert(null);
       setLoadingSignIn(true);
-      console.log(isLoggedIn);
       await login(emailRef.current.value, passwordRef.current.value);
       setAlert(`You logged in! :) Wait to be redirected to Landing page`);
-      setIsLoggedIn('logged in');
-      console.log(isLoggedIn);
-
       setLoadingSignIn(false);
       setTimeout(() => {
         navigate('/landing-page');
