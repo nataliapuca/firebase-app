@@ -4,16 +4,17 @@ import { UserAuth } from '../../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { database } from '../../firebase';
+import Spinner from './Spinner/Spinner';
 
 const Landing = () => {
-  const { currentUser, logout, currentUserDB } = UserAuth();
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(false);
+  const { currentUser, logout, currentUserDB } = UserAuth()!;
+  const [error, setError] = useState<null | string>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const handlelogout = async () => {
     try {
-      setError();
+      setError(null);
       setLoading(true);
       await logout();
       navigate('/');
@@ -33,13 +34,13 @@ const Landing = () => {
 
   return (
     <>
-      {currentUserDB.email && (
-        <>
+      {currentUser ? (
+        <div className="w-100" style={{ maxWidth: '400px' }}>
           <Card>
             <Card.Body>
               <h2 className="text-center mb-4">Landing content</h2>
               {error && (
-                <div class="alert alert-danger" role="alert">
+                <div className="alert alert-danger" role="alert">
                   {error}
                 </div>
               )}
@@ -65,7 +66,9 @@ const Landing = () => {
           <Button className="w-100 mb-2" onClick={readUsers}>
             Read Users
           </Button>
-        </>
+        </div>
+      ) : (
+        <Spinner />
       )}
     </>
   );

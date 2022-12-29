@@ -1,20 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { UserAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { collection, setDoc, doc } from 'firebase/firestore';
-import { database } from '../../firebase';
 
 const Signup = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const { signup } = UserAuth();
-  const [error, setError] = useState();
-  const [alert, setAlert] = useState();
-  const [loading, setLoading] = useState(false);
+  const emailRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const passwordRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const passwordConfirmRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const [error, setError] = useState<null | string>(null);
+  const [alert, setAlert] = useState<null | string>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const usersRef = collection(database, 'users');
+  const { signup } = UserAuth()!;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -24,23 +23,9 @@ const Signup = () => {
     }
     try {
       setError(null);
-      setAlert();
+      setAlert(null);
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value).then(
-        userCredential => {
-          setDoc(doc(usersRef, userCredential.user.uid), {
-            first: '',
-            last: '',
-            street: '',
-            houseapt: '',
-            city: '',
-            postalcode: '',
-            country: '',
-            phone: '',
-            email: emailRef.current.value,
-          });
-        },
-      );
+      await signup(emailRef.current.value, passwordRef.current.value);
       setAlert(`You signed up! :) Wait to be redirected to Log In page`);
       setLoading(false);
       setTimeout(() => {
@@ -58,12 +43,12 @@ const Signup = () => {
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
           {alert && (
-            <div class="alert alert-success" role="alert">
+            <div className="alert alert-success" role="alert">
               {alert}
             </div>
           )}

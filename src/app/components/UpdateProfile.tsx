@@ -4,12 +4,14 @@ import { UserAuth } from '../../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const UpdateProfile = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const { updateAccountPassword, updateAccountEmail } = UserAuth();
-  const [error, setError] = useState();
-  const [alert, setAlert] = useState();
+  const emailRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const passwordRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const passwordConfirmRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const { updateAccountPassword, updateAccountEmail } = UserAuth()!;
+  const [error, setError] = useState<null | string>(null);
+  const [alert, setAlert] = useState<null | string>(null);
   const [loadingEmail, setLoadingEmail] = useState(false);
   const [loadingPassword, setLoadingPassword] = useState(false);
   const navigate = useNavigate();
@@ -17,8 +19,8 @@ const UpdateProfile = () => {
   const handleEmailSubmit = async e => {
     e.preventDefault();
     try {
-      setError();
-      setAlert();
+      setError(null);
+      setAlert(null);
       setLoadingEmail(true);
       await updateAccountEmail(emailRef.current.value);
       setAlert(`It worked! :) Your email has been updated`);
@@ -38,8 +40,8 @@ const UpdateProfile = () => {
       return setError('passwords dont match');
     }
     try {
-      setError();
-      setAlert();
+      setError(null);
+      setAlert(null);
       setLoadingPassword(true);
       await updateAccountPassword(passwordRef.current.value);
       setAlert(`It worked! :) Your password has been updated`);
@@ -59,12 +61,12 @@ const UpdateProfile = () => {
         <Card.Body>
           <h2 className="text-center mb-4">Update Profile</h2>
           {error && (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
           {alert && (
-            <div class="alert alert-success" role="alert">
+            <div className="alert alert-success" role="alert">
               {alert}
             </div>
           )}

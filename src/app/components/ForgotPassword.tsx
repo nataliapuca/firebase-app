@@ -4,17 +4,18 @@ import { UserAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
 const ForgotPassword = () => {
-  const emailRef = useRef();
-  const { resetPassword } = UserAuth();
-  const [error, setError] = useState();
-  const [alert, setAlert] = useState();
+  const emailRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  const { resetPassword } = UserAuth()!;
+  const [error, setError] = useState<null | string>(null);
+  const [alert, setAlert] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      setError();
-      setAlert();
+      setError(null);
+      setAlert(null);
       setLoading(true);
       await resetPassword(emailRef.current.value);
       setAlert(`It worked! :) Reset password link has been sent to your email`);
@@ -31,12 +32,12 @@ const ForgotPassword = () => {
         <Card.Body>
           <h2 className="text-center mb-4">Forgot Password?</h2>
           {error && (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
           {alert && (
-            <div class="alert alert-success" role="alert">
+            <div className="alert alert-success" role="alert">
               {alert}
             </div>
           )}

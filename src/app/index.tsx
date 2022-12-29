@@ -17,7 +17,6 @@ import { LandingPage } from './pages/LandingPage/Loadable';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider } from '../contexts/AuthContext';
-import PrivateRoute from './components/PrivateRoute';
 import { ForgotPasswordPage } from './pages/ForgotPasword/Loadable';
 import { UpdateProfilePage } from './pages/UpdateProfile/Loadable';
 
@@ -38,14 +37,7 @@ export function App() {
           <Route path="/login" element={<LogInPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/update-profile" element={<UpdateProfilePage />} />
-          <Route
-            path="/landing-page"
-            element={
-              <PrivateRoute>
-                <LandingPage />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/landing-page" element={<LandingPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
