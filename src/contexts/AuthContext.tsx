@@ -48,14 +48,14 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
       createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
           setDoc(doc(usersRef, userCredential.user.uid), {
-            first: '',
-            last: '',
-            street: '',
-            houseapt: '',
-            city: '',
-            postalcode: '',
-            country: '',
-            phone: '',
+            first: ' ',
+            last: ' ',
+            street: ' ',
+            houseapt: ' ',
+            city: ' ',
+            postalcode: ' ',
+            country: ' ',
+            phone: ' ',
             email: email,
           });
           resolve({ success: true });

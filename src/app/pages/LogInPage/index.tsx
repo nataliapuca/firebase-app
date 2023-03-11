@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from 'react-bootstrap';
-import LogIn from '../../components/LogIn';
+import LogIn from '../../components/LogIn/LogIn';
 export const LogInPage = () => {
   return (
     <Container
