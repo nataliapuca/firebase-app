@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Container } from 'react-bootstrap';
-import Landing from '../../components/Landing';
+
+import Landing from '../../components/Landing/Landing';
+
 export const LandingPage = () => {
   return (
     <Container

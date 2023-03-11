@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from 'react-bootstrap';
-import UpdateProfile from '../../components/UpdateProfile';
+import UpdateProfile from '../../components/UpdateProfile/UpdateProfile';
 
 export const UpdateProfilePage = () => {
   return (

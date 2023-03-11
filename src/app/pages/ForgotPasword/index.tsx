@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from 'react-bootstrap';
-import ForgotPassword from '../../components/ForgotPassword';
+import ForgotPassword from '../../components/ForgotPassword/ForgotPassword';
 
 export const ForgotPasswordPage = () => {
   return (

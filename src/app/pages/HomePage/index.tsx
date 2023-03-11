@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Signup from '../../components/Signup';
+import Signup from '../../components/SignUp/Signup';
 import { Container } from 'react-bootstrap';
 
 export const HomePage = () => {
