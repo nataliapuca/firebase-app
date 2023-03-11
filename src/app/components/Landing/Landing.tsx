@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 
 const Landing = () => {
   const { currentUser, logout, currentUserDB } = UserAuth()!;
+
   const [error, setError] = useState<null | string>(null);
   const [alert, setAlert] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
